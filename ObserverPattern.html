@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observer Pattern</title>
+    <script>
+        class Subject {
+            constructor() {
+                this.observerList = [];
+            }
+            addObserver(observer) {
+                if (!observer.notify) return console.log('这并不是一个观察者');
+                this.observerList.push(observer);
+            }
+            deleteObserver(observer) {
+                let currentObserverIndex = this.observerList.indexOf(observer)
+                currentObserverIndex != -1 ? this.observerList.splice(currentObserverIndex, 1) : console.log('不存在该观察者')
+            }
+            notifyObservers() {
+                this.observerList.forEach(observer => {
+                    if (!observer.notify) console.log(observer + '，更新失败，不存在notify方法');
+                    observer.notify();
+                })
+            }
+        }
+        class Observer {
+            constructor(name) {
+                this.name = name
+            }
+            notify() {
+                console.log('我是' + this.name + '，我更新了');
+            }
+        }
+        let observer1 = new Observer('张三')
+        let observer2 = new Observer('李四')
+        let observer3 = new Observer('王五')
+        let subject = new Subject();
+        subject.addObserver(observer1);
+        subject.addObserver(observer2);
+        subject.addObserver(observer3);
+        subject.addObserver(111);
+        subject.notifyObservers();
+        console.log(subject);
+        subject.deleteObserver(observer2);
+        subject.deleteObserver(observer2);
+    </script>
+
+</head>
+
+<body>
+
+</body>
+
+</html>
